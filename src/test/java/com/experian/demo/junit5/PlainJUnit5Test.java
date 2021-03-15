@@ -28,7 +28,7 @@ import org.slf4j.LoggerFactory;
  * 2 ✔ A Plain JUnit 5 test story
  *   ✔ The simplest test ever (Basic flow, Better naming test)
  *   ✔ Asserting news (all, throws or not throws)
- *   - Repeating and repeating...
+ *   ✔ Repeating and repeating...
  *   - Parametrizing (same structure, different data)
  *   - Nesting relatives
  * 3 - Extension model
@@ -90,15 +90,17 @@ class PlainJUnit5Test {
     int value = repetitionInfo.getCurrentRepetition();
     //WHEN
     Shape shape = maker.createFromSpec(fromSpecs(Map.of("radio", value)));
-    //THEN Assert...
+    //THEN
     assertAll(
         () -> assertTrue(shape instanceof Circle),
         () -> {
           double area = PI * pow(value, 2);
-          logger.info("Expected are value is: {}", area);
+          logger.info("Expected area value is: {}", area);
           assertEquals(area, shape.area());
         },
         () -> assertThat(shape.describeIt()).contains("radio="+value+".0")
     );
   }
+
+
 }
