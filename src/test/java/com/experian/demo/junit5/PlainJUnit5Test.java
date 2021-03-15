@@ -7,8 +7,8 @@ import com.experian.demo.junit5.infrastructure.Shape2DMaker;
 import org.junit.jupiter.api.Test;
 
 /**
- * 1 - Brief about JUnit
- * 2 - A Plain JUnit 5 test story
+ * 1 ✔ Brief about JUnit
+ * 2 ✔ A Plain JUnit 5 test story
  *   - The simplest test ever (Basic flow, Better naming test)
  *   - Asserting news (all, throws or not throws)
  *   - Repeating and repeating...
