@@ -38,7 +38,7 @@ class PlainJUnit5Test {
     //WHEN
     String yourself = maker.introduceYourself();
     //THEN
-    assertEquals(yourself, "I'm the 2D shape maker...indeed there is One greater than me!");
+    assertEquals("I'm the 2D shape maker...indeed there is One greater than me!", yourself);
   }
 
   @Test
