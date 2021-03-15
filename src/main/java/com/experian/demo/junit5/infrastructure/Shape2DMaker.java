@@ -20,7 +20,8 @@ public class Shape2DMaker implements GeometricMaker {
   public Shape createFromSpec(ShapeSpec shapeSpec) {
     if(shapeSpec.equals(EMPTY_SPEC))
       throw new IllegalArgumentException("Not Possible to create a shape without specs...");
-    return new Circle(shapeSpec.extract("radio", Double.class::cast));
+
+    return new Circle(shapeSpec.extract("radio", (Object o) -> Double.valueOf(o.toString())));
   }
 
 }

@@ -1,6 +1,8 @@
 package com.experian.demo.junit5;
 
 import static com.experian.demo.junit5.domain.shape2d.ShapeSpec.fromSpecs;
+import static java.lang.Math.PI;
+import static java.lang.Math.pow;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -15,7 +17,11 @@ import com.experian.demo.junit5.domain.shape2d.ShapeSpec;
 import com.experian.demo.junit5.infrastructure.Shape2DMaker;
 import java.util.Map;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.RepeatedTest;
+import org.junit.jupiter.api.RepetitionInfo;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 1 ✔ Brief about JUnit
@@ -29,6 +35,8 @@ import org.junit.jupiter.api.Test;
  */
 @DisplayName("A Plain JUnit 5 test story:")
 class PlainJUnit5Test {
+
+  private static final Logger logger = LoggerFactory.getLogger(PlainJUnit5Test.class);
 
   @Test
   @DisplayName("The simplest test ever")
@@ -75,5 +83,22 @@ class PlainJUnit5Test {
     );
   }
 
-
+  @RepeatedTest(value = 3, name = "The fix of a bug...trying with: "+ RepeatedTest.CURRENT_REPETITION_PLACEHOLDER)
+  void shouldNotFailWithAnInteger(RepetitionInfo repetitionInfo){
+    //GIVEN
+    GeometricMaker maker = new Shape2DMaker();
+    int value = repetitionInfo.getCurrentRepetition();
+    //WHEN
+    Shape shape = maker.createFromSpec(fromSpecs(Map.of("radio", value)));
+    //THEN Assert...
+    assertAll(
+        () -> assertTrue(shape instanceof Circle),
+        () -> {
+          double area = PI * pow(value, 2);
+          logger.info("Expected are value is: {}", area);
+          assertEquals(area, shape.area());
+        },
+        () -> assertThat(shape.describeIt()).contains("radio="+value+".0")
+    );
+  }
 }
