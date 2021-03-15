@@ -21,7 +21,7 @@ import org.junit.jupiter.api.Test;
  * 1 ✔ Brief about JUnit
  * 2 ✔ A Plain JUnit 5 test story
  *   ✔ The simplest test ever (Basic flow, Better naming test)
- *   - Asserting news (all, throws or not throws)
+ *   ✔ Asserting news (all, throws or not throws)
  *   - Repeating and repeating...
  *   - Parametrizing (same structure, different data)
  *   - Nesting relatives
@@ -42,6 +42,7 @@ class PlainJUnit5Test {
   }
 
   @Test
+  @DisplayName("The new \"throw exception\" flow")
   void shouldThrowExceptionWhenEmptySpecIsProvided() {
     //GIVEN
     GeometricMaker maker = new Shape2DMaker();
@@ -51,6 +52,7 @@ class PlainJUnit5Test {
   }
 
   @Test
+  @DisplayName("The new \"no exception thrown\" flow")
   void shouldNotThrowExceptionWhenAValidSpecIsProvided() {
     //GIVEN
     GeometricMaker maker = new Shape2DMaker();
@@ -59,6 +61,7 @@ class PlainJUnit5Test {
   }
 
   @Test
+  @DisplayName("The new way of \"checking all conditions\" ")
   void shouldAllSpecsArePresentInTheShape() {
     //GIVEN
     GeometricMaker maker = new Shape2DMaker();
