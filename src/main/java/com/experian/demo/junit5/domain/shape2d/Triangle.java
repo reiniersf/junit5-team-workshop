@@ -4,11 +4,11 @@ import com.experian.demo.junit5.domain.Shape;
 
 public class Triangle implements Shape {
   private final Double base;
-  private final Double heightFromBase;
+  private final Double height;
 
-  public Triangle(Double base, Double heightFromBase) {
+  public Triangle(Double base, Double height) {
     this.base = base;
-    this.heightFromBase = heightFromBase;
+    this.height = height;
   }
 
   @Override
@@ -18,14 +18,14 @@ public class Triangle implements Shape {
 
   @Override
   public Double area() {
-    return (heightFromBase*base)/2;
+    return (height *base)/2;
   }
 
   @Override
   public String toString() {
     return "Triangle{" +
         "base=" + base +
-        ", height=" + heightFromBase +
+        ", height=" + height +
         '}';
   }
 }

@@ -13,7 +13,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.experian.demo.junit5.domain.GeometricMaker;
 import com.experian.demo.junit5.domain.Shape;
 import com.experian.demo.junit5.domain.shape2d.Circle;
+import com.experian.demo.junit5.domain.shape2d.Rectangle;
 import com.experian.demo.junit5.domain.shape2d.ShapeSpec;
+import com.experian.demo.junit5.domain.shape2d.Triangle;
 import com.experian.demo.junit5.infrastructure.Shape2DMaker;
 import java.util.Map;
 import org.junit.jupiter.api.DisplayName;
@@ -70,7 +72,7 @@ class PlainJUnit5Test {
 
   @Test
   @DisplayName("The new way of \"checking all conditions\" ")
-  void shouldAllSpecsArePresentInTheShape() {
+  void shouldCheckAllSpecsArePresentInTheCircle() {
     //GIVEN
     GeometricMaker maker = new Shape2DMaker();
     //WHEN
@@ -99,6 +101,36 @@ class PlainJUnit5Test {
           assertEquals(area, shape.area());
         },
         () -> assertThat(shape.describeIt()).contains("radio="+value+".0")
+    );
+  }
+
+  @Test
+  @DisplayName("Check all specs for a triangle shape")
+  void shouldCheckAllSpecsArePresentInTheTriangle(){
+    //GIVEN
+    GeometricMaker maker = new Shape2DMaker();
+    //WHEN
+    Shape shape = maker.createFromSpec(fromSpecs(Map.of("height", 2.0, "base", 3.0)));
+    //THEN
+    assertAll(
+        () -> assertTrue(shape instanceof Triangle),
+        () -> assertEquals(3.0, shape.area()),
+        () -> assertThat(shape.describeIt()).contains("height=2.0", "base=3.0")
+    );
+  }
+
+  @Test
+  @DisplayName("Check all specs for a rectangle shape")
+  void shouldCheckAllSpecsArePresentInTheRectangle(){
+    //GIVEN
+    GeometricMaker maker = new Shape2DMaker();
+    //WHEN
+    Shape shape = maker.createFromSpec(fromSpecs(Map.of("height", 2.0, "length", 3.0)));
+    //THEN
+    assertAll(
+        () -> assertTrue(shape instanceof Rectangle),
+        () -> assertEquals(6.0, shape.area()),
+        () -> assertThat(shape.describeIt()).contains("height=2.0", "length=3.0")
     );
   }
 
