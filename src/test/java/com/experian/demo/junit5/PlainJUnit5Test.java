@@ -18,10 +18,14 @@ import com.experian.demo.junit5.domain.shape2d.ShapeSpec;
 import com.experian.demo.junit5.domain.shape2d.Triangle;
 import com.experian.demo.junit5.infrastructure.Shape2DMaker;
 import java.util.Map;
+import java.util.function.Consumer;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.RepetitionInfo;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -70,23 +74,9 @@ class PlainJUnit5Test {
     assertDoesNotThrow(() -> maker.createFromSpec(fromSpecs(Map.of("radio", 2.3))));
   }
 
-  @Test
-  @DisplayName("The new way of \"checking all conditions\" ")
-  void shouldCheckAllSpecsArePresentInTheCircle() {
-    //GIVEN
-    GeometricMaker maker = new Shape2DMaker();
-    //WHEN
-    Shape shape = maker.createFromSpec(fromSpecs(Map.of("radio", 2.0)));
-    //THEN
-    assertAll(
-        () -> assertTrue(shape instanceof Circle),
-        () -> assertEquals(12.566370614359172, shape.area()),
-        () -> assertThat(shape.describeIt()).contains("radio=2.0")
-    );
-  }
-
-  @RepeatedTest(value = 3, name = "The fix of a bug...trying with: "+ RepeatedTest.CURRENT_REPETITION_PLACEHOLDER)
-  void shouldNotFailWithAnInteger(RepetitionInfo repetitionInfo){
+  @RepeatedTest(value = 3, name = "The fix of a bug...trying with: "
+      + RepeatedTest.CURRENT_REPETITION_PLACEHOLDER)
+  void shouldNotFailWithAnInteger(RepetitionInfo repetitionInfo) {
     //GIVEN
     GeometricMaker maker = new Shape2DMaker();
     int value = repetitionInfo.getCurrentRepetition();
@@ -100,39 +90,46 @@ class PlainJUnit5Test {
           logger.info("Expected area value is: {}", area);
           assertEquals(area, shape.area());
         },
-        () -> assertThat(shape.describeIt()).contains("radio="+value+".0")
+        () -> assertThat(shape.describeIt()).contains("radio=" + value + ".0")
     );
   }
 
-  @Test
-  @DisplayName("Check all specs for a triangle shape")
-  void shouldCheckAllSpecsArePresentInTheTriangle(){
+  @MethodSource("shapeCases")
+  @ParameterizedTest(name = "[{index}] Shape with [{0}]")
+  void shouldCreateAndCheckAllSpecsArePresentInTheShape(ShapeSpec shapeSpec,
+      Consumer<Shape> shapeAssertions) {
     //GIVEN
     GeometricMaker maker = new Shape2DMaker();
     //WHEN
-    Shape shape = maker.createFromSpec(fromSpecs(Map.of("height", 2.0, "base", 3.0)));
+    Shape shape = maker.createFromSpec(shapeSpec);
     //THEN
-    assertAll(
-        () -> assertTrue(shape instanceof Triangle),
-        () -> assertEquals(3.0, shape.area()),
-        () -> assertThat(shape.describeIt()).contains("height=2.0", "base=3.0")
-    );
+    assertThat(shape).satisfies(shapeAssertions);
   }
 
-  @Test
-  @DisplayName("Check all specs for a rectangle shape")
-  void shouldCheckAllSpecsArePresentInTheRectangle(){
-    //GIVEN
-    GeometricMaker maker = new Shape2DMaker();
-    //WHEN
-    Shape shape = maker.createFromSpec(fromSpecs(Map.of("height", 2.0, "length", 3.0)));
-    //THEN
-    assertAll(
-        () -> assertTrue(shape instanceof Rectangle),
-        () -> assertEquals(6.0, shape.area()),
-        () -> assertThat(shape.describeIt()).contains("height=2.0", "length=3.0")
+  static Stream<Object[]> shapeCases() {
+    Consumer<Shape> circleAssertions = shape -> {
+      assertTrue(shape instanceof Circle);
+      assertEquals(12.566370614359172, shape.area());
+      assertThat(shape.describeIt()).contains("radio=2.0");
+    };
+
+    Consumer<Shape> triangleAssertions = shape -> {
+      assertTrue(shape instanceof Triangle);
+      assertEquals(3.0, shape.area());
+      assertThat(shape.describeIt()).contains("height=2.0", "base=3.0");
+    };
+
+    Consumer<Shape> rectangleAssertions = shape -> {
+      assertTrue(shape instanceof Rectangle);
+      assertEquals(6.0, shape.area());
+      assertThat(shape.describeIt()).contains("height=2.0", "length=3.0");
+    };
+
+    return Stream.of(
+        new Object[]{fromSpecs(Map.of("radio", 2.0)), circleAssertions},
+        new Object[]{fromSpecs(Map.of("height", 2.0, "base", 3.0)), triangleAssertions},
+        new Object[]{fromSpecs(Map.of("height", 2.0, "length", 3.0)), rectangleAssertions}
     );
   }
-
 
 }

@@ -30,4 +30,11 @@ public class ShapeSpec {
   public boolean containsField(String field) {
     return specs.containsKey(field);
   }
+
+  @Override
+  public String toString() {
+    return "ShapeSpec{" +
+        "specs=" + specs +
+        '}';
+  }
 }
