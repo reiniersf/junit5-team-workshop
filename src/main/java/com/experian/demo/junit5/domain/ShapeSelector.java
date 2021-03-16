@@ -11,15 +11,15 @@ import java.util.AbstractMap.SimpleEntry;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Predicate;
-
 public final class ShapeSelector {
 
-  private ShapeSelector(){}
-
+  private ShapeSelector() {
+  }
+  private static final String HEIGHT_FIELD = "height";
   private static final Predicate<ShapeSpec> IS_A_CIRCLE_SPEC = shapeSpec -> shapeSpec
       .containsField("radio");
   private static final Predicate<ShapeSpec> HAS_HEIGHT = shapeSpec -> shapeSpec
-      .containsField("height");
+      .containsField(HEIGHT_FIELD);
   private static final Predicate<ShapeSpec> HAS_LENGTH = shapeSpec -> shapeSpec
       .containsField("length");
   private static final Predicate<ShapeSpec> HAS_BASE = shapeSpec -> shapeSpec.containsField("base");
@@ -31,18 +31,18 @@ public final class ShapeSelector {
               shapeSpec -> new Circle(shapeSpec.extract("radio", AS_DOUBLE))),
           new SimpleEntry<>(HAS_HEIGHT.and(HAS_LENGTH),
               shapeSpec -> new Rectangle(
-                  shapeSpec.extract("height", AS_DOUBLE),
+                  shapeSpec.extract(HEIGHT_FIELD, AS_DOUBLE),
                   shapeSpec.extract("length", AS_DOUBLE))),
           new SimpleEntry<>(HAS_HEIGHT.and(HAS_BASE),
               shapeSpec -> new Triangle(
                   shapeSpec.extract("base", AS_DOUBLE),
-                  shapeSpec.extract("height", AS_DOUBLE)
-                  ))
+                  shapeSpec.extract(HEIGHT_FIELD, AS_DOUBLE)
+              ))
       );
 
-  public static Shape buildFormSpec(ShapeSpec spec){
+  public static Shape buildFormSpec(ShapeSpec spec) {
     return strategies.entrySet().stream()
-        .filter(entry ->  entry.getKey().test(spec))
+        .filter(entry -> entry.getKey().test(spec))
         .findAny()
         .map(entry -> entry.getValue().apply(spec))
         .orElse(new UnknownShape(spec));
