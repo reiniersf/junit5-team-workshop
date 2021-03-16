@@ -21,6 +21,7 @@ import java.util.Map;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.RepetitionInfo;
 import org.junit.jupiter.api.Test;
@@ -55,27 +56,32 @@ class PlainJUnit5Test {
     assertEquals("I'm the 2D shape maker...indeed there is One greater than me!", yourself);
   }
 
-  @Test
-  @DisplayName("The new \"throw exception\" flow")
-  void shouldThrowExceptionWhenEmptySpecIsProvided() {
-    //GIVEN
-    GeometricMaker maker = new Shape2DMaker();
-    //THEN
-    assertThrows(IllegalArgumentException.class,
-        () -> maker.createFromSpec(ShapeSpec.EMPTY_SPEC));
+  @Nested
+  @DisplayName("About throwing exceptions:")
+  class AboutThrowingException {
+    @Test
+    @DisplayName("The new \"throw exception\" flow")
+    void shouldThrowExceptionWhenEmptySpecIsProvided() {
+      //GIVEN
+      GeometricMaker maker = new Shape2DMaker();
+      //THEN
+      assertThrows(IllegalArgumentException.class,
+          () -> maker.createFromSpec(ShapeSpec.EMPTY_SPEC));
+    }
+
+    @Test
+    @DisplayName("The new \"no exception thrown\" flow")
+    void shouldNotThrowExceptionWhenAValidSpecIsProvided() {
+      //GIVEN
+      GeometricMaker maker = new Shape2DMaker();
+      //THEN
+      assertDoesNotThrow(() -> maker.createFromSpec(fromSpecs(Map.of("radio", 2.3))));
+    }
   }
 
-  @Test
-  @DisplayName("The new \"no exception thrown\" flow")
-  void shouldNotThrowExceptionWhenAValidSpecIsProvided() {
-    //GIVEN
-    GeometricMaker maker = new Shape2DMaker();
-    //THEN
-    assertDoesNotThrow(() -> maker.createFromSpec(fromSpecs(Map.of("radio", 2.3))));
-  }
-
-  @RepeatedTest(value = 3, name = "The fix of a bug...trying with: "
+  @RepeatedTest(value = 3,  name = "The fix of a bug...trying with: "
       + RepeatedTest.CURRENT_REPETITION_PLACEHOLDER)
+  @DisplayName("Fix a bug in the specs:")
   void shouldNotFailWithAnInteger(RepetitionInfo repetitionInfo) {
     //GIVEN
     GeometricMaker maker = new Shape2DMaker();
@@ -96,6 +102,7 @@ class PlainJUnit5Test {
 
   @MethodSource("shapeCases")
   @ParameterizedTest(name = "[{index}] Shape with [{0}]")
+  @DisplayName("Check correct creation of shapes:")
   void shouldCreateAndCheckAllSpecsArePresentInTheShape(ShapeSpec shapeSpec,
       Consumer<Shape> shapeAssertions) {
     //GIVEN
