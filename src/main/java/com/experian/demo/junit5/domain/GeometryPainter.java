@@ -1,2 +1,7 @@
-package com.experian.demo.junit5.domain;public interface GeometryPainter {
+package com.experian.demo.junit5.domain;
+
+public interface GeometryPainter {
+
+
+
 }

@@ -41,7 +41,7 @@ import org.slf4j.LoggerFactory;
  *   ✔ Nesting relatives
  * 3 - Extension model
  */
-@ExtendWith()
+
 @DisplayName("A Plain JUnit 5 test story:")
 class PlainJUnit5Test {
 
@@ -105,6 +105,10 @@ class PlainJUnit5Test {
   @MethodSource("shapeCases")
   @ParameterizedTest(name = "[{index}] Shape with [{0}]")
   @DisplayName("Check correct creation of shapes:")
+  @ExtendWith(DrawingExtension.class)
+  @PaintShapeWithColors({
+      @ShapeColor(R = 251, G = 205, B = 155),
+      @ShapeColor(R = 200, G = 107, B = 30)})
   void shouldCreateAndCheckAllSpecsArePresentInTheShape(ShapeSpec shapeSpec,
       Consumer<Shape> shapeAssertions) {
     //GIVEN
