@@ -1,5 +1,8 @@
 package com.experian.demo.junit5;
 
+import com.experian.demo.junit5.domain.GeometryPainter;
+import com.experian.demo.junit5.infrastructure.ShapePainter;
+import java.awt.Color;
 import org.junit.jupiter.api.extension.AfterTestExecutionCallback;
 import org.junit.jupiter.api.extension.BeforeTestExecutionCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -10,6 +13,7 @@ import org.slf4j.LoggerFactory;
 public class DrawingExtension implements BeforeTestExecutionCallback, AfterTestExecutionCallback {
 
   private static final Logger logger = LoggerFactory.getLogger(DrawingExtension.class);
+  GeometryPainter painter = new ShapePainter();
 
   @Override
   public void beforeTestExecution(ExtensionContext context) throws Exception {
@@ -25,7 +29,7 @@ public class DrawingExtension implements BeforeTestExecutionCallback, AfterTestE
         .isAnnotated(context.getRequiredTestMethod(), PaintShapeWithColors.class)) {
 
       AnnotationSupport.findRepeatableAnnotations(context.getRequiredTestMethod(), ShapeColor.class)
-          .forEach(a -> logger.info("Painting with color: R:{}, G:{}, B:{}", a.R(), a.G(), a.B()));
+          .forEach(a -> painter.paintShape(new Color(a.R(), a.G(), a.B())));
     }
   }
 }

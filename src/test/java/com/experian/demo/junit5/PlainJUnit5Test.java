@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.experian.demo.junit5.domain.GeometricMaker;
+import com.experian.demo.junit5.domain.GeometryMaker;
 import com.experian.demo.junit5.domain.Shape;
 import com.experian.demo.junit5.domain.shape2d.Circle;
 import com.experian.demo.junit5.domain.shape2d.Rectangle;
@@ -51,7 +51,7 @@ class PlainJUnit5Test {
   @DisplayName("The simplest test ever")
   void shouldIntroduceItself() {
     //GIVEN
-    GeometricMaker maker = new Shape2DMaker();
+    GeometryMaker maker = new Shape2DMaker();
     //WHEN
     String yourself = maker.introduceYourself();
     //THEN
@@ -65,7 +65,7 @@ class PlainJUnit5Test {
     @DisplayName("The new \"throw exception\" flow")
     void shouldThrowExceptionWhenEmptySpecIsProvided() {
       //GIVEN
-      GeometricMaker maker = new Shape2DMaker();
+      GeometryMaker maker = new Shape2DMaker();
       //THEN
       assertThrows(IllegalArgumentException.class,
           () -> maker.createFromSpec(ShapeSpec.EMPTY_SPEC));
@@ -75,7 +75,7 @@ class PlainJUnit5Test {
     @DisplayName("The new \"no exception thrown\" flow")
     void shouldNotThrowExceptionWhenAValidSpecIsProvided() {
       //GIVEN
-      GeometricMaker maker = new Shape2DMaker();
+      GeometryMaker maker = new Shape2DMaker();
       //THEN
       assertDoesNotThrow(() -> maker.createFromSpec(fromSpecs(Map.of("radio", 2.3))));
     }
@@ -86,7 +86,7 @@ class PlainJUnit5Test {
   @DisplayName("Fix a bug in the specs:")
   void shouldNotFailWithAnInteger(RepetitionInfo repetitionInfo) {
     //GIVEN
-    GeometricMaker maker = new Shape2DMaker();
+    GeometryMaker maker = new Shape2DMaker();
     int value = repetitionInfo.getCurrentRepetition();
     //WHEN
     Shape shape = maker.createFromSpec(fromSpecs(Map.of("radio", value)));
@@ -112,7 +112,7 @@ class PlainJUnit5Test {
   void shouldCreateAndCheckAllSpecsArePresentInTheShape(ShapeSpec shapeSpec,
       Consumer<Shape> shapeAssertions) {
     //GIVEN
-    GeometricMaker maker = new Shape2DMaker();
+    GeometryMaker maker = new Shape2DMaker();
     //WHEN
     Shape shape = maker.createFromSpec(shapeSpec);
     //THEN

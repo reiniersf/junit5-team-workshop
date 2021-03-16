@@ -3,7 +3,7 @@ package com.experian.demo.junit5.domain;
 
 import com.experian.demo.junit5.domain.shape2d.ShapeSpec;
 
-public interface GeometricMaker {
+public interface GeometryMaker {
 
   String introduceYourself();
 

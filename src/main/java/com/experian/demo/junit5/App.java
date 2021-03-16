@@ -1,7 +1,7 @@
 package com.experian.demo.junit5;
 
 import com.experian.demo.junit5.app.SimpleSpringApp;
-import com.experian.demo.junit5.domain.GeometricMaker;
+import com.experian.demo.junit5.domain.GeometryMaker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
@@ -15,7 +15,7 @@ public class App {
 
   public static void main(String[] args) {
     ApplicationContext applicationContext = new AnnotationConfigApplicationContext(App.class);
-    GeometricMaker maker = applicationContext.getBean(GeometricMaker.class);
+    GeometryMaker maker = applicationContext.getBean(GeometryMaker.class);
     logger.info(maker.introduceYourself());
   }
 }
