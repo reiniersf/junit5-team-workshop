@@ -37,7 +37,7 @@ import org.slf4j.LoggerFactory;
  *   ✔ Asserting news (all, throws or not throws)
  *   ✔ Repeating and repeating...
  *   ✔ Parametrizing (same structure, different data)
- *   - Nesting relatives
+ *   ✔ Nesting relatives
  * 3 - Extension model
  */
 @DisplayName("A Plain JUnit 5 test story:")
