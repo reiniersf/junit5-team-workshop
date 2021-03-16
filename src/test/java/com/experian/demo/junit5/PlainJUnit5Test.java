@@ -35,7 +35,7 @@ import org.slf4j.LoggerFactory;
  *   ✔ The simplest test ever (Basic flow, Better naming test)
  *   ✔ Asserting news (all, throws or not throws)
  *   ✔ Repeating and repeating...
- *   - Parametrizing (same structure, different data)
+ *   ✔ Parametrizing (same structure, different data)
  *   - Nesting relatives
  * 3 - Extension model
  */
